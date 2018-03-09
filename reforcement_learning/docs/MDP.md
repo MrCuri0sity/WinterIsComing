@@ -57,5 +57,59 @@ v_{\pi}(s_t) &= E_{\pi}[\sum_{k=0}^{+\infty}k^{\gamma}R_{t+k+1}] \\
 q_{\pi}(s_t, a_t) = E_{\pi}[R_t + \gamma q_{\pi}(s_{t+1}, a_{t+1})| S = s_{t}, A = a_{t}] \tag{7}
 \\]
 下图展示了状态值函数和行为状态值函数的具体计算过程：
+![](https://github.com/MrCuri0sity/WinterIsComing/blob/master/reforcement_learning/pics/state_cal.png?raw=true)
 
+由上图中B可知：
+\\[
+v_{\pi}(s) = \sum_{a \in A}{\pi}(a|s)q_{\pi}(a, s) \tag{8}
+\\]
+由上图中C可知：
+
+\\[
+q_{\pi}(a, s) =  R_s^a + \gamma \sum_{s^{'} \in S} P^a_{ss^{'}} v_{\pi}(s^{'}) \tag{9}
+\\]
+将式（9）代入式（8）得：
+\\[
+v_{\pi}(s) =\sum_{a \in A}{\pi}(a|s)(R_s^a + \gamma \sum_{s^{'} \in S} P^a_{ss^{'}} v_{\pi}(s^{'})) \tag{10}
+\\]
+
+下图展示了状态行为值的具体计算过程：
+![](https://github.com/MrCuri0sity/WinterIsComing/blob/master/reforcement_learning/pics/state_cal_1.png?raw=true)
+
+由上图中C可知：
+\\[
+v_{\pi}(s^{'}) = \sum_{a_{'} \in A} {\pi}(a^{'} | s^{'}) q_{\pi}(a^{'}, s^{'}) \tag{11}
+\\]
+将式（11）代入式（9）可以得：
+\\[
+q_{\pi}(a, s) = R_s^a + \gamma \sum_{s^{'} \in S} P^a_{ss^{'}}\sum_{a^{'} \in A} {\pi}(a^{'} | s^{'}) q_{\pi}(a^{'}, s^{'}) \tag{12}
+\\]
+定义：最优状态值函数$$v^{*}(s)$$ 为在所有策略中值最大的值函数即：
+\\[
+\begin{split}
+v^*(s) &= \mathop{\arg max}_{\pi} v_{\pi}(s) 
+\end{split}\tag{13}
+\\]
+定义：最优行为-状态值函数$$q^*(a, s)$$ 为在所有的策略中值最大的值函数即：
+\\[
+\begin{split}
+q*(a, s) &= \mathop{\arg max}_{\pi} q_{\pi}(a, s) 
+\end{split}\tag{14}
+\\]
+将式（10）代入式（13）可得最优状态值的贝尔曼方程：
+\\[
+v^*(s) = \mathop {\max}_a R_s^a  + \gamma \sum_{s^{'} \in S} P^a_{ss^{'}} v^*_{\pi}(s^{'}) \tag{15}
+\\]
+将式（12）代入式（14）可得到最优状态-转移值的贝尔曼方程：
+\\[
+q^*(a, s) = \mathop {\max}_a R_s^a  + \gamma \sum_{s^{'} \in S} P^a_{ss^{'}}\mathop {max}_{a_{'}} q^*_{\pi}(s^{'},a^{'}) \tag{16}
+\\]
+
+若已知最优状态-动作值函数，最优策略可通过直接最大化$$q^*(s, a)$$决定：
+\\[
+{\pi}^*(a|s) = \begin{cases}
+1 & a = \mathop{\arg max}_{a \in A} q^*(s, a) \\
+0 & otherwise
+\end{cases}
+\\]
 
